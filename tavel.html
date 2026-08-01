@@ -22,7 +22,8 @@
             color: var(--ink);
             background: var(--paper);
             margin: 0;
-            padding: 40px 16px;
+            padding: 40px 20px;
+            overflow-x: hidden;
         }
         .container { max-width: 720px; margin: 0 auto; }
 
@@ -98,8 +99,8 @@
         @keyframes confetti-fall { to { transform: translate(var(--dx), var(--dy)) rotate(var(--rot)); opacity: 0; } }
 
         /* day pager */
-        .day-nav { display: flex; align-items: center; gap: 8px; margin-bottom: 24px; }
-        .pager-arrow { flex: none; width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--line); background: var(--card); color: var(--ink); font-size: 1.2rem; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.15s ease, background 0.2s ease, box-shadow 0.2s ease; }
+        .day-nav { display: flex; align-items: center; gap: 8px; margin: 0 4px 24px; }
+        .pager-arrow { flex: none; width: 36px; height: 36px; margin: 2px; border-radius: 50%; border: 1px solid var(--line); background: var(--card); color: var(--ink); font-size: 1.2rem; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.15s ease, background 0.2s ease, box-shadow 0.2s ease; }
         .pager-arrow:hover { background: var(--accent); color: #fff; transform: scale(1.08); box-shadow: 0 4px 12px rgba(168, 68, 58, 0.35); }
         .pager-arrow:active { transform: scale(0.94); }
         .pager-arrow:disabled { opacity: 0.3; cursor: default; transform: none; background: var(--card); color: var(--ink); box-shadow: none; }
@@ -149,6 +150,25 @@
         .desc .tip { color: var(--stamp); font-weight: 600; }
 
         footer.note { text-align: center; font-size: 0.8rem; color: var(--ink-soft); padding-top: 24px; border-top: 1px solid var(--line); }
+
+        @media (hover: none) {
+            .item-edit { opacity: 0.65; }
+            .checklist li .remove-x { opacity: 0.45; }
+        }
+        @media (max-width: 420px) {
+            body { padding: 24px 12px; }
+            .container { padding: 0; }
+            h1 { font-size: 1.35rem; }
+            .day-tabs { padding: 3px; gap: 3px; }
+            .day-tab { font-size: 0.72rem; padding: 8px 2px; }
+            .pager-arrow { width: 30px; height: 30px; font-size: 1rem; }
+            .item { padding-right: 52px; gap: 8px; }
+            .item-icon { width: 36px; height: 36px; }
+            .item-icon img { width: 24px; height: 24px; }
+            .item-chk { right: 26px; }
+            .modal { padding: 18px; }
+            .field-row { flex-direction: column; gap: 0; }
+        }
 
         /* edit modal */
         .modal-backdrop { position: fixed; inset: 0; background: rgba(43, 38, 34, 0.45); display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.2s ease; }
