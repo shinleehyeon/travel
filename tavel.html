@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>홍콩 3박 4일 모녀 여행 일정표</title>
+    <style>
+        :root {
+            --ink: #2b2622;
+            --ink-soft: #6b6259;
+            --paper: #faf6f0;
+            --card: #fffdfa;
+            --line: #e4dccf;
+            --accent: #a8443a;
+            --accent-soft: #f1e2dc;
+            --stamp: #5c6f5a;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Pretendard', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+            line-height: 1.65;
+            color: var(--ink);
+            background: var(--paper);
+            margin: 0;
+            padding: 40px 16px;
+        }
+        .container { max-width: 720px; margin: 0 auto; }
+
+        header.trip-header {
+            text-align: center;
+            padding-bottom: 28px;
+            margin-bottom: 32px;
+            border-bottom: 1px solid var(--line);
+        }
+        .eyebrow {
+            font-size: 0.78rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        h1 { font-size: 1.65rem; margin: 0 0 8px; font-weight: 700; letter-spacing: -0.01em; }
+        .subtitle { color: var(--ink-soft); font-size: 0.92rem; }
+
+        .hotel-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-left: 3px solid var(--stamp);
+            padding: 14px 18px;
+            border-radius: 4px;
+            margin-bottom: 28px;
+            font-size: 0.95rem;
+        }
+        .hotel-card .icon { flex: none; width: 40px; height: 40px; }
+        .hotel-card .label {
+            font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+            color: var(--ink-soft); display: block; margin-bottom: 3px;
+        }
+
+        /* checklist */
+        .checklist { background: var(--card); border: 1px solid var(--line); padding: 18px 22px; border-radius: 4px; margin-bottom: 36px; position: relative; overflow: hidden; }
+        .checklist-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+        .checklist h3 { margin: 0; font-size: 0.95rem; letter-spacing: 0.04em; color: var(--accent); }
+        .btn-round { display: inline-flex; align-items: center; gap: 6px; border: none; background: var(--accent); color: #fff; font-weight: 700; font-size: 0.82rem; padding: 7px 14px; border-radius: 999px; cursor: pointer; transition: transform 0.15s ease, box-shadow 0.15s ease; box-shadow: 0 2px 8px rgba(168, 68, 58, 0.35); }
+        .btn-round:hover { transform: translateY(-2px) scale(1.04); box-shadow: 0 6px 14px rgba(168, 68, 58, 0.45); }
+        .btn-round:active { transform: translateY(0) scale(0.96); }
+        .btn-round .plus { display: inline-block; transition: transform 0.25s ease; }
+        .btn-round.open .plus { transform: rotate(45deg); }
+        .add-row { display: flex; gap: 8px; max-height: 0; opacity: 0; overflow: hidden; transition: max-height 0.3s ease, opacity 0.25s ease, margin 0.3s ease; margin-bottom: 0; }
+        .add-row.open { max-height: 60px; opacity: 1; margin-bottom: 14px; }
+        .add-row input { flex: 1; border: 1px solid var(--line); border-radius: 6px; padding: 9px 12px; font-size: 0.9rem; font-family: inherit; background: #fff; color: var(--ink); outline: none; transition: border-color 0.2s ease, box-shadow 0.2s ease; }
+        .add-row input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+        .add-row button { border: none; background: var(--stamp); color: #fff; font-weight: 700; font-size: 0.85rem; padding: 0 16px; border-radius: 6px; cursor: pointer; transition: filter 0.15s ease; }
+        .add-row button:hover { filter: brightness(1.1); }
+
+        .checklist ul { margin: 0; padding-left: 0; list-style: none; }
+        .checklist li { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; font-size: 0.93rem; padding: 6px 8px; border-radius: 6px; transition: background 0.25s ease, transform 0.25s ease; animation: pop-in 0.35s ease both; }
+        .checklist li:last-child { margin-bottom: 0; }
+        @keyframes pop-in { from { opacity: 0; transform: translateY(-6px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        .checklist li.leaving { animation: pop-out 0.25s ease forwards; }
+        @keyframes pop-out { to { opacity: 0; transform: translateX(12px) scale(0.9); max-height: 0; margin: 0; padding: 0; } }
+        .chk { appearance: none; -webkit-appearance: none; flex: none; width: 20px; height: 20px; margin-top: 1px; border: 2px solid var(--stamp); border-radius: 5px; cursor: pointer; position: relative; transition: background 0.2s ease, transform 0.15s ease, border-color 0.2s ease; }
+        .chk:hover { transform: scale(1.08); }
+        .chk:checked { background: var(--stamp); border-color: var(--stamp); animation: check-pop 0.35s cubic-bezier(.36,1.6,.4,1); }
+        .chk:checked::after { content: ""; position: absolute; left: 6px; top: 2px; width: 5px; height: 10px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+        @keyframes check-pop { 0% { transform: scale(0.7); } 60% { transform: scale(1.25); } 100% { transform: scale(1); } }
+        .checklist li .chk-label { flex: 1; transition: color 0.25s ease, opacity 0.25s ease; }
+        .checklist li.done .chk-label { color: var(--ink-soft); text-decoration: line-through; opacity: 0.65; }
+        .checklist li .remove-x { flex: none; background: none; border: none; color: var(--ink-soft); font-size: 1rem; line-height: 1; cursor: pointer; opacity: 0; transition: opacity 0.2s ease, color 0.2s ease, transform 0.2s ease; padding: 2px 4px; }
+        .checklist li:hover .remove-x { opacity: 0.6; }
+        .checklist li .remove-x:hover { opacity: 1 !important; color: var(--accent); transform: scale(1.15); }
+
+        .confetti { position: fixed; width: 8px; height: 8px; top: 0; left: 0; pointer-events: none; border-radius: 2px; z-index: 999; animation: confetti-fall linear forwards; }
+        @keyframes confetti-fall { to { transform: translate(var(--dx), var(--dy)) rotate(var(--rot)); opacity: 0; } }
+
+        /* day pager */
+        .day-nav { display: flex; align-items: center; gap: 8px; margin-bottom: 24px; }
+        .pager-arrow { flex: none; width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--line); background: var(--card); color: var(--ink); font-size: 1.2rem; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.15s ease, background 0.2s ease, box-shadow 0.2s ease; }
+        .pager-arrow:hover { background: var(--accent); color: #fff; transform: scale(1.08); box-shadow: 0 4px 12px rgba(168, 68, 58, 0.35); }
+        .pager-arrow:active { transform: scale(0.94); }
+        .pager-arrow:disabled { opacity: 0.3; cursor: default; transform: none; background: var(--card); color: var(--ink); box-shadow: none; }
+        .day-tabs { flex: 1; display: flex; gap: 6px; background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 4px; }
+        .day-tab { flex: 1; border: none; background: transparent; color: var(--ink-soft); font-weight: 700; font-size: 0.82rem; padding: 8px 6px; border-radius: 999px; cursor: pointer; transition: background 0.25s ease, color 0.25s ease, transform 0.15s ease; }
+        .day-tab:hover { color: var(--ink); }
+        .day-tab.active { background: var(--ink); color: #fff; transform: scale(1.03); }
+        .day-pager { position: relative; overflow: hidden; }
+        .day-dots { display: flex; justify-content: center; gap: 8px; margin: 18px 0 8px; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--line); cursor: pointer; transition: background 0.25s ease, transform 0.25s ease; }
+        .dot:hover { transform: scale(1.3); }
+        .dot.active { background: var(--accent); transform: scale(1.3); }
+
+        .day-actions { display: flex; justify-content: flex-end; margin: 0 0 14px; }
+
+        .day-block { margin-bottom: 0; animation: day-slide-in 0.35s ease both; }
+        .day-block[hidden] { display: none; }
+        @keyframes day-slide-in { from { opacity: 0; transform: translateX(16px); } to { opacity: 1; transform: translateX(0); } }
+        .day-heading { display: flex; align-items: baseline; gap: 10px; margin: 0 0 18px; padding-bottom: 8px; border-bottom: 2px solid var(--ink); }
+        .day-num { font-size: 1.5rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+        .day-title { font-size: 0.98rem; color: var(--ink-soft); }
+
+        .items { position: relative; }
+        .items::before { content: ""; position: absolute; left: 21px; top: 6px; bottom: 6px; width: 2px; background: var(--line); }
+        .item { position: relative; display: flex; align-items: flex-start; gap: 12px; padding: 14px 60px 14px 0; transition: background 0.25s ease; }
+        .item.done { background: var(--accent-soft); border-radius: 6px; }
+        .item.done .item-title { text-decoration: line-through; color: var(--ink-soft); }
+        .item.done .item-title a { color: inherit; }
+        .item-icon { position: relative; flex: none; width: 44px; height: 44px; border-radius: 50%; background: var(--card); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 8px rgba(0,0,0,0.08); overflow: hidden; transition: transform 0.2s ease; z-index: 1; }
+        .item:hover .item-icon { transform: scale(1.08) rotate(-4deg); }
+        .item-icon img { width: 30px; height: 30px; object-fit: contain; }
+        .item-body { flex: 1; min-width: 0; }
+        .item-chk { position: absolute; right: 30px; top: 16px; margin: 0; width: 22px; height: 22px; border-radius: 50%; }
+        .item-chk:checked::after { left: 7px; top: 3px; }
+        .item-edit { position: absolute; right: 0; top: 16px; width: 22px; height: 22px; border: none; background: none; cursor: pointer; font-size: 1rem; color: var(--ink-soft); opacity: 0.5; transition: opacity 0.2s ease, transform 0.2s ease, color 0.2s ease; }
+        .item:hover .item-edit { opacity: 1; }
+        .item-edit:hover { color: var(--accent); transform: scale(1.15) rotate(-8deg); }
+
+        .item-time { font-size: 0.78rem; letter-spacing: 0.06em; color: var(--ink-soft); font-weight: 600; font-variant-numeric: tabular-nums; }
+        .item-title { font-size: 1.02rem; font-weight: 700; margin: 3px 0 8px; }
+        .item-title a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--accent); }
+        .item-title a:hover { color: var(--accent); }
+        .facts { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 0.85rem; color: var(--ink-soft); margin-bottom: 6px; }
+        .facts span.k { color: var(--ink); font-weight: 600; }
+        .cash-warning { color: var(--accent); font-weight: 600; }
+        .desc { font-size: 0.92rem; color: #4a443d; }
+        .desc .tip { color: var(--stamp); font-weight: 600; }
+
+        footer.note { text-align: center; font-size: 0.8rem; color: var(--ink-soft); padding-top: 24px; border-top: 1px solid var(--line); }
+
+        /* edit modal */
+        .modal-backdrop { position: fixed; inset: 0; background: rgba(43, 38, 34, 0.45); display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.2s ease; }
+        .modal-backdrop.open { opacity: 1; pointer-events: auto; }
+        .modal { background: var(--card); border-radius: 12px; max-width: 480px; width: 100%; max-height: 88vh; overflow-y: auto; padding: 24px; transform: translateY(16px) scale(0.97); opacity: 0; transition: transform 0.25s cubic-bezier(.2,1.4,.4,1), opacity 0.25s ease; box-shadow: 0 20px 50px rgba(0,0,0,0.25); }
+        .modal-backdrop.open .modal { transform: translateY(0) scale(1); opacity: 1; }
+        .modal h3 { margin: 0 0 4px; font-size: 1.1rem; }
+        .modal .modal-sub { color: var(--ink-soft); font-size: 0.82rem; margin-bottom: 18px; }
+        .field { margin-bottom: 12px; }
+        .field label { display: block; font-size: 0.78rem; font-weight: 700; color: var(--ink-soft); margin-bottom: 4px; letter-spacing: 0.02em; }
+        .field input[type="text"], .field input[type="url"], .field textarea, .field select {
+            width: 100%; border: 1px solid var(--line); border-radius: 6px; padding: 9px 11px; font-size: 0.9rem; font-family: inherit; background: #fff; color: var(--ink); outline: none; transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .field input:focus, .field textarea:focus, .field select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+        .field textarea { resize: vertical; min-height: 46px; }
+        .field-row { display: flex; gap: 10px; }
+        .field-row .field { flex: 1; }
+        .icon-picker { display: flex; flex-wrap: wrap; gap: 6px; }
+        .icon-picker button { border: 1px solid var(--line); background: #fff; width: 44px; height: 44px; border-radius: 10px; cursor: pointer; transition: transform 0.15s ease, border-color 0.2s ease, background 0.2s ease; display: flex; align-items: center; justify-content: center; padding: 4px; }
+        .icon-picker button img { width: 100%; height: 100%; object-fit: contain; }
+        .icon-picker button:hover { transform: scale(1.1); }
+        .icon-picker button.active { border-color: var(--accent); background: var(--accent-soft); }
+        .modal-actions { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--line); }
+        .modal-actions .save-btn { border: none; background: var(--accent); color: #fff; font-weight: 700; padding: 10px 20px; border-radius: 999px; cursor: pointer; transition: transform 0.15s ease, box-shadow 0.15s ease; box-shadow: 0 2px 8px rgba(168, 68, 58, 0.35); }
+        .modal-actions .save-btn:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 6px 14px rgba(168, 68, 58, 0.45); }
+        .modal-actions .cancel-btn { border: none; background: none; color: var(--ink-soft); font-weight: 600; cursor: pointer; padding: 10px 6px; }
+        .modal-actions .cancel-btn:hover { color: var(--ink); }
+        .modal-close { position: absolute; top: 14px; right: 14px; border: none; background: none; font-size: 1.2rem; color: var(--ink-soft); cursor: pointer; }
+        .modal { position: relative; }
+
+        .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--ink); color: #fff; padding: 10px 20px; border-radius: 999px; font-size: 0.85rem; opacity: 0; pointer-events: none; transition: opacity 0.25s ease, transform 0.25s ease; z-index: 1100; }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header class="trip-header">
+        <div class="eyebrow">Hong Kong · 3박 4일</div>
+        <h1>모녀 미식 · 쇼핑 여행 일정표</h1>
+        <div class="subtitle">2026년 여름 · 완차이 숙소 기준 동선</div>
+    </header>
+
+    <div class="hotel-card">
+        <img class="icon" src="https://cdn.jsdelivr.net/gh/microsoft/fluentui-emoji@main/assets/Hotel/3D/hotel_3d.png" alt="호텔" loading="lazy">
+        <div>
+            <span class="label">투숙 숙소</span>
+            <a href="https://www.google.com/maps/search/?api=1&query=Hopewell+Hotel+Hong+Kong" target="_blank" rel="noopener">완차이 호프웰 호텔 (Hopewell Hotel)</a>
+        </div>
+    </div>
+
+    <div class="checklist">
+        <div class="checklist-head">
+            <h3>출발 전 필수 체크리스트</h3>
+            <button type="button" class="btn-round" id="addBtn"><span class="plus">+</span> 항목 추가</button>
+        </div>
+        <div class="add-row" id="addRow">
+            <input type="text" id="addInput" placeholder="챙겨야 할 것을 입력하고 Enter" maxlength="80">
+            <button type="button" id="addConfirm">추가</button>
+        </div>
+        <ul id="checklistItems">
+            <li><input type="checkbox" class="chk"><span class="chk-label"><strong>모바일 옥토퍼스 카드:</strong> 스마트폰(애플 지갑 등)에 앱으로 사전 발급 필수 (대중교통 및 편의점 만능 결제)</span></li>
+            <li><input type="checkbox" class="chk"><span class="chk-label"><strong>홍콩달러 현금 환전:</strong> 2일차 점심(하이퐁로드)과 야시장 매대는 카드 결제가 안 되는 곳이 많으니 현금 필수 지참</span></li>
+            <li><input type="checkbox" class="chk"><span class="chk-label"><strong>디즈니랜드 방문일 등록:</strong> 티켓 예매 후 공식 홈페이지에서 3일차(월요일) 방문 예약 반드시 사전 등록하기</span></li>
+            <li><input type="checkbox" class="chk"><span class="chk-label"><strong>날짜별 운영시간 재확인:</strong> 아래 표기된 시간은 평시 기준이며, 공휴일·성수기에는 변동될 수 있으니 출발 1~2일 전 구글맵스 링크로 최신 정보 확인 권장</span></li>
+        </ul>
+    </div>
+
+    <div class="day-nav">
+        <button type="button" class="pager-arrow" id="prevDay" aria-label="이전 날">‹</button>
+        <div class="day-tabs" id="dayTabs">
+            <button type="button" class="day-tab active" data-goto="1">Day 1</button>
+            <button type="button" class="day-tab" data-goto="2">Day 2</button>
+            <button type="button" class="day-tab" data-goto="3">Day 3</button>
+            <button type="button" class="day-tab" data-goto="4">Day 4</button>
+        </div>
+        <button type="button" class="pager-arrow" id="nextDay" aria-label="다음 날">›</button>
+    </div>
+
+    <div class="day-pager" id="dayPager">
+        <section class="day-block" data-day="1">
+            <div class="day-heading"><span class="day-num">Day 1</span><span class="day-title">토 · 공항 도착 및 2층 버스 야경 투어</span></div>
+            <div class="day-actions"><button type="button" class="btn-round add-item-btn" data-day="1"><span class="plus">+</span> 일정 추가</button></div>
+            <div class="items" data-day-items="1"></div>
+        </section>
+        <section class="day-block" data-day="2" hidden>
+            <div class="day-heading"><span class="day-num">Day 2</span><span class="day-title">일 · 구룡반도 쇼핑, 바다 위 노을, 가성비 해산물</span></div>
+            <div class="day-actions"><button type="button" class="btn-round add-item-btn" data-day="2"><span class="plus">+</span> 일정 추가</button></div>
+            <div class="items" data-day-items="2"></div>
+        </section>
+        <section class="day-block" data-day="3" hidden>
+            <div class="day-heading"><span class="day-num">Day 3</span><span class="day-title">월 · 홍콩 디즈니랜드 하루 종일</span></div>
+            <div class="day-actions"><button type="button" class="btn-round add-item-btn" data-day="3"><span class="plus">+</span> 일정 추가</button></div>
+            <div class="items" data-day-items="3"></div>
+        </section>
+        <section class="day-block" data-day="4" hidden>
+            <div class="day-heading"><span class="day-num">Day 4</span><span class="day-title">화 · 마지막 쇼핑과 출국</span></div>
+            <div class="day-actions"><button type="button" class="btn-round add-item-btn" data-day="4"><span class="plus">+</span> 일정 추가</button></div>
+            <div class="items" data-day-items="4"></div>
+        </section>
+    </div>
+
+    <div class="day-dots" id="dayDots">
+        <span class="dot active" data-goto="1"></span>
+        <span class="dot" data-goto="2"></span>
+        <span class="dot" data-goto="3"></span>
+        <span class="dot" data-goto="4"></span>
+    </div>
+
+    <footer class="note">
+        각 장소명을 클릭하면 구글맵스로 위치·운영시간·리뷰를 바로 확인할 수 있어요.<br>
+        연필 아이콘(✏️)을 누르면 일정을 직접 수정할 수 있습니다. 표기된 운영시간·휴무일은 사전 조사 기준이니 방문 전 다시 확인하세요.
+    </footer>
+</div>
+
+<!-- edit modal -->
+<div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal">
+        <button type="button" class="modal-close" id="modalClose">✕</button>
+        <h3 id="modalTitle">일정 수정</h3>
+        <div class="modal-sub">필요한 내용을 채우고 저장하면 바로 반영돼요.</div>
+        <form id="itemForm">
+            <div class="field">
+                <label>아이콘</label>
+                <div class="icon-picker" id="iconPicker"></div>
+            </div>
+            <div class="field-row">
+                <div class="field">
+                    <label for="f-time">시간</label>
+                    <input type="text" id="f-time" placeholder="예: 18:30 또는 09:00 - 10:30">
+                </div>
+            </div>
+            <div class="field">
+                <label for="f-title">제목 (장소/활동명)</label>
+                <input type="text" id="f-title" placeholder="예: 저녁 식사: 앤거스 카페" required>
+            </div>
+            <div class="field">
+                <label for="f-url">구글맵스 링크 (선택)</label>
+                <input type="url" id="f-url" placeholder="https://www.google.com/maps/search/?api=1&query=...">
+            </div>
+            <div class="field">
+                <label for="f-transport">교통 정보 (선택)</label>
+                <input type="text" id="f-transport" placeholder="예: 완차이역 → 도보 5분">
+            </div>
+            <div class="field-row">
+                <div class="field">
+                    <label for="f-hours">운영시간 (선택)</label>
+                    <input type="text" id="f-hours" placeholder="예: 매일 11:00-22:00">
+                </div>
+                <div class="field">
+                    <label for="f-closed">휴무일 (선택)</label>
+                    <input type="text" id="f-closed" placeholder="예: 매주 월요일">
+                </div>
+            </div>
+            <div class="field">
+                <label for="f-menu">추천 메뉴 / 참고사항 (선택)</label>
+                <input type="text" id="f-menu" placeholder="예: 완탕면, 밀크티">
+            </div>
+            <div class="field">
+                <label for="f-desc">메모 / 설명 (선택)</label>
+                <textarea id="f-desc" placeholder="이 일정에 대한 팁이나 메모를 적어주세요"></textarea>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="cancel-btn" id="deleteItemBtn">일정 삭제</button>
+                <div>
+                    <button type="button" class="cancel-btn" id="modalCancel">취소</button>
+                    <button type="submit" class="save-btn">저장</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------- checklist (챙겨야 할 것) ---------- */
+(function () {
+    var STORAGE_KEY = 'hk-trip-checklist-v1';
+    var list = document.getElementById('checklistItems');
+    var addBtn = document.getElementById('addBtn');
+    var addRow = document.getElementById('addRow');
+    var addInput = document.getElementById('addInput');
+    var addConfirm = document.getElementById('addConfirm');
+    var colors = ['#a8443a', '#5c6f5a', '#e0a85c', '#3f6b8a', '#c76b98'];
+
+    function burstConfetti(x, y) {
+        for (var i = 0; i < 16; i++) {
+            var piece = document.createElement('div');
+            piece.className = 'confetti';
+            var angle = Math.random() * Math.PI * 2;
+            var dist = 60 + Math.random() * 80;
+            piece.style.left = x + 'px';
+            piece.style.top = y + 'px';
+            piece.style.background = colors[i % colors.length];
+            piece.style.setProperty('--dx', Math.cos(angle) * dist + 'px');
+            piece.style.setProperty('--dy', Math.sin(angle) * dist + 'px');
+            piece.style.setProperty('--rot', (Math.random() * 360) + 'deg');
+            piece.style.animationDuration = (500 + Math.random() * 300) + 'ms';
+            document.body.appendChild(piece);
+            piece.addEventListener('animationend', function () { this.remove(); });
+        }
+    }
+
+    function wireItem(li) {
+        var chk = li.querySelector('.chk');
+        chk.addEventListener('change', function () {
+            li.classList.toggle('done', chk.checked);
+            if (chk.checked) {
+                var rect = chk.getBoundingClientRect();
+                burstConfetti(rect.left + rect.width / 2, rect.top + rect.height / 2);
+            }
+            save();
+        });
+        var removeBtn = li.querySelector('.remove-x');
+        if (removeBtn) {
+            removeBtn.addEventListener('click', function () {
+                li.classList.add('leaving');
+                li.addEventListener('animationend', function () { li.remove(); save(); }, { once: true });
+            });
+        }
+    }
+
+    function addItem(text, checked, animate) {
+        if (!text.trim()) return;
+        var li = document.createElement('li');
+        li.className = 'removable' + (checked ? ' done' : '');
+        if (!animate) li.style.animation = 'none';
+        li.innerHTML = '<input type="checkbox" class="chk"' + (checked ? ' checked' : '') + '>' +
+            '<span class="chk-label"></span>' +
+            '<button type="button" class="remove-x" aria-label="삭제">✕</button>';
+        li.querySelector('.chk-label').textContent = text;
+        list.appendChild(li);
+        wireItem(li);
+    }
+
+    function save() {
+        var items = [];
+        list.querySelectorAll('li').forEach(function (li) {
+            items.push({
+                text: li.querySelector('.chk-label').textContent,
+                checked: li.querySelector('.chk').checked,
+                custom: li.classList.contains('removable')
+            });
+        });
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); } catch (e) {}
+    }
+
+    function load() {
+        var raw;
+        try { raw = localStorage.getItem(STORAGE_KEY); } catch (e) { raw = null; }
+        if (!raw) { list.querySelectorAll('li').forEach(wireItem); return; }
+        var items;
+        try { items = JSON.parse(raw); } catch (e) { items = null; }
+        if (!items) { list.querySelectorAll('li').forEach(wireItem); return; }
+        list.innerHTML = '';
+        items.forEach(function (item) { addItem(item.text, item.checked, false); });
+    }
+
+    addBtn.addEventListener('click', function () {
+        var open = addRow.classList.toggle('open');
+        addBtn.classList.toggle('open', open);
+        if (open) addInput.focus();
+    });
+
+    function submitNew() {
+        var val = addInput.value;
+        if (!val.trim()) return;
+        addItem(val, false, true);
+        save();
+        addInput.value = '';
+        addInput.focus();
+    }
+
+    addConfirm.addEventListener('click', submitNew);
+    addInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') submitNew(); });
+
+    load();
+})();
+</script>
+
+<script>
+/* ---------- day pager + editable itinerary ---------- */
+(function () {
+    var STORAGE_KEY = 'hk-trip-itinerary-v1';
+
+    var ICON_BASE = 'https://cdn.jsdelivr.net/gh/microsoft/fluentui-emoji@main/assets/';
+    var ICON_MAP = {
+        hotel: { name: '호텔', file: 'Hotel/3D/hotel_3d.png' },
+        food: { name: '식사', file: 'Fork and knife with plate/3D/fork_and_knife_with_plate_3d.png' },
+        shopping: { name: '쇼핑', file: 'Handbag/3D/handbag_3d.png' },
+        sight: { name: '명소', file: 'Camera/3D/camera_3d.png' },
+        bus: { name: '버스', file: 'Bus/3D/bus_3d.png' },
+        ferris: { name: '놀이공원', file: 'Ferris wheel/3D/ferris_wheel_3d.png' },
+        ferry: { name: '페리', file: 'Ferry/3D/ferry_3d.png' },
+        dusk: { name: '야경/노을', file: 'Cityscape at dusk/3D/cityscape_at_dusk_3d.png' },
+        fireworks: { name: '불꽃놀이', file: 'Fireworks/3D/fireworks_3d.png' },
+        flight: { name: '비행기', file: 'Airplane/3D/airplane_3d.png' },
+        pin: { name: '기타', file: 'Round pushpin/3D/round_pushpin_3d.png' }
+    };
+    var DEFAULT_ICON = 'pin';
+
+    function iconUrl(key) {
+        var entry = ICON_MAP[key] || ICON_MAP[DEFAULT_ICON];
+        return ICON_BASE + entry.file;
+    }
+
+    var DEFAULT_DATA = {
+        1: [
+            { icon: 'flight', time: '15:30 – 17:30', title: '공항 도착 및 호텔 체크인', url: '', transport: '공항철도(AEL) → 홍콩역 하차 → MTR 파란색 라인 환승 → 완차이역 하차', hours: '', closed: '', menu: '', desc: '완차이역 D출구 → 리퉁 애비뉴 경유 → 호프웰 몰 3층 진입 → 전용 엘리베이터로 18층 로비 이동' },
+            { icon: 'food', time: '18:30', title: '저녁 식사: 앤거스 카페 (Angus Cafe)', url: 'https://www.google.com/maps/search/?api=1&query=Angus+Cafe+Fortress+Hill+Hong+Kong', transport: '호텔 정문 대로변 도보 3~5분', hours: '월~토 07:00–18:00', closed: '매주 일요일', menu: '크리스피 번, 사테 소고기 면, 아이스 밀크티', desc: '현지 직장인들이 주로 찾는 숨은 차찬텡(로컬 분식점). 달콤바삭한 번과 사테 면의 단짠 조합으로 가볍게 첫 식사.' },
+            { icon: 'bus', time: '19:40', title: '15번 2층 버스로 빅토리아 피크 상행', url: '', transport: "호텔 앞 '호프웰 센터(Hopewell Centre)' 정류장에서 15번 버스 탑승", hours: '', closed: '', menu: '', desc: '무조건 2층 맨 앞자리에! 토요일 피크트램의 긴 대기 줄을 피해, 통유리창으로 산길 야경을 즐기는 버스 투어입니다.' },
+            { icon: 'dusk', time: '20:45 –', title: '빅토리아 피크 야경 전망대 감상 후 숙소 복귀', url: 'https://www.google.com/maps/search/?api=1&query=Victoria+Peak+Hong+Kong', transport: '피크트램 하행 → 초록색 미니버스 1번 → 완차이 복귀', hours: '트램 매일 07:30–23:00', closed: '', menu: '', desc: '밤 9시가 넘으면 단체 인파가 빠져나가 하행선 줄이 대폭 줄어듭니다. 한산할 때 트램으로 내려오세요.' }
+        ],
+        2: [
+            { icon: 'sight', time: '10:30 – 12:00', title: '[구룡반도] 스타의 거리 (Avenue of Stars) 산책', url: 'https://www.google.com/maps/search/?api=1&query=Avenue+of+Stars+Hong+Kong', transport: '완차이역(파란색) → 애드미럴티역 환승(빨간색) → 침사추이역', hours: '연중무휴 24시간', closed: '', menu: '', desc: '빅토리아 하버 스카이라인을 배경으로 딸과 함께 예쁜 스냅사진을 남기는 시간.' },
+            { icon: 'food', time: '12:00 – 13:00', title: '[구룡반도] 점심: 하이퐁로드 숙식시장 (Haiphong Road Bazaar)', url: 'https://www.google.com/maps/search/?api=1&query=Haiphong+Road+Temporary+Market+Tsim+Sha+Tsui', transport: '스타의 거리에서 구룡공원 옆 골목으로 도보 10분', hours: '매일 06:00–20:00', closed: '연중무휴', menu: '사테 소고기 면, 수제 소고기 완자면 (현금만 가능)', desc: '리모델링되어 깨끗하고 에어컨이 빵빵한 현지 직장인 비밀 푸드코트. 줄 서서 먹는 진짜 소고기 완자면의 풍미.' },
+            { icon: 'shopping', time: '13:30 – 16:30', title: '[구룡반도] 몽콕 로컬 패션 쇼핑 & 레이디스 마켓 야시장', url: 'https://www.google.com/maps/search/?api=1&query=Ladies+Market+Mong+Kok+Hong+Kong', transport: '침사추이역(빨간색) → 3정거장 → 몽콕역 E2 출구', hours: '야시장 매일 11:00–23:00', closed: '', menu: '', desc: '인근 골목의 힙한 보세 옷가게와 가방 매장 구경 및 쇼핑. 던다스 스트리트 매대에서 카레 어묵과 계란빵(까이딴짜이) 간식 타임!' },
+            { icon: 'ferry', time: '17:00 – 17:30', title: '스타페리 타고 노을 보며 홍콩섬 복귀', url: 'https://www.google.com/maps/search/?api=1&query=Star+Ferry+Pier+Tsim+Sha+Tsui', transport: "침사추이 페리 선착장 → 'To Central' 페리", hours: '매일 06:30–23:30', closed: '', menu: '', desc: '해 질 무렵 배 위에서 시원한 바람을 맞으며 노을과 야경을 동시에 감상하는 코스입니다.' },
+            { icon: 'food', time: '18:00 – 19:30', title: '[홍콩섬] 저녁 식사: 성기 해선 레스토랑 (Sing Kee)', url: 'https://www.google.com/maps/search/?api=1&query=Sing+Kee+Seafood+Restaurant+Wan+Chai', transport: '센트럴 선착장 → 소호 방면 도보 15분(육교·무빙워크 연결)', hours: '매일 11:30–20:00', closed: '연중무휴', menu: '맛조개 마늘 당면 찜, 소금 후추 오징어 튀김', desc: '비싼 랍스터 대신 가성비와 맛을 모두 잡은 광둥식 해산물 명가. 저녁 마감(20:00)이 빠른 편이니 서둘러 이동하세요.' }
+        ],
+        3: [
+            { icon: 'ferris', time: '08:30', title: '호텔 조식 후 디즈니랜드로 이동', url: 'https://www.google.com/maps/search/?api=1&query=Hong+Kong+Disneyland', transport: '완차이역(파란색) → 홍콩역 → 라이킹역 환승(주황색) → 선니베이역 환승 → 디즈니랜드 리조트선', hours: '통상 10:00–20:30(여름 성수기 최대 21:00)', closed: '', menu: '', desc: '방문일 사전등록을 마쳤는지 입장 전 다시 확인하고, 당일 최신 운영시간은 공식 앱에서 재확인하세요.' },
+            { icon: 'ferris', time: '10:00 – 17:00', title: '놀이기구 & 퍼레이드 자유 관람', url: '', transport: '', hours: '', closed: '', menu: '미스틱 포인트, 빅 그리즐리 마운틴, 캐슬 앞 데이 퍼레이드', desc: '사람이 몰리는 오전 개장 직후 인기 기구부터 공략하고, 낮 시간 캐슬 포토타임과 퍼레이드 일정을 미리 앱에서 확인해두면 동선이 편해집니다.' },
+            { icon: 'food', time: '17:30 – 19:00', title: '파크 내 저녁 식사', url: '', transport: '', hours: '', closed: '', menu: '미키 모양 와플, 캐릭터 테마 세트 메뉴', desc: '저녁 불꽃놀이 전 여유 있게 식사하며 캐릭터 굿즈 매장도 함께 둘러보기.' },
+            { icon: 'fireworks', time: '20:00 –', title: '불꽃놀이 & 나이트 퍼레이드 관람 후 숙소 복귀', url: '', transport: '디즈니랜드 리조트선 → 선니베이 → 홍콩역 환승 → 완차이역', hours: '', closed: '', menu: '', desc: '폐장 직후 역이 매우 혼잡하니, 마지막 쇼가 끝나자마자 바로 이동하는 편을 추천합니다.' }
+        ],
+        4: [
+            { icon: 'pin', time: '09:00 – 10:30', title: '호텔 체크아웃 및 짐 보관', url: '', transport: '', hours: '', closed: '', menu: '', desc: '프론트에 캐리어를 맡기고 가볍게 마지막 반나절 일정을 즐깁니다.' },
+            { icon: 'shopping', time: '10:30 – 12:30', title: '[완차이] 타이위엔 스트리트 마지막 기념품 쇼핑', url: 'https://www.google.com/maps/search/?api=1&query=Tai+Yuen+Street+Wan+Chai+Hong+Kong', transport: '호텔에서 도보 10분 내외', hours: '', closed: '', menu: '', desc: '완차이 로컬 골목에서 저렴한 기념품과 간식을 마지막으로 구입하는 시간.' },
+            { icon: 'food', time: '13:00', title: '공항 이동 전 마지막 점심', url: '', transport: '완차이역 → 홍콩역 → 공항철도(AEL) · 공항까지 약 25분', hours: '', closed: '', menu: '', desc: '시내 홍콩역에서 미리 체크인·수하물 위탁이 가능하니(항공사별 상이), 가능하다면 짐을 가볍게 만들고 이동하세요.' },
+            { icon: 'flight', time: '15:30', title: '홍콩국제공항 도착 및 출국 수속', url: '', transport: '', hours: '', closed: '', menu: '', desc: '항공권 발권 후 면세 구역에서 남은 시간을 보내며 3박 4일 여행 마무리.' }
+        ]
+    };
+
+    var days = Array.prototype.slice.call(document.querySelectorAll('.day-block'));
+    var tabs = Array.prototype.slice.call(document.querySelectorAll('.day-tab'));
+    var dots = Array.prototype.slice.call(document.querySelectorAll('.dot'));
+    var prevBtn = document.getElementById('prevDay');
+    var nextBtn = document.getElementById('nextDay');
+    var pager = document.getElementById('dayPager');
+    var toast = document.getElementById('toast');
+    var current = 1;
+    var total = days.length;
+    var colors = ['#a8443a', '#5c6f5a', '#e0a85c', '#3f6b8a', '#c76b98'];
+
+    var data = loadData();
+
+    function loadData() {
+        var raw;
+        try { raw = localStorage.getItem(STORAGE_KEY); } catch (e) { raw = null; }
+        if (!raw) return JSON.parse(JSON.stringify(DEFAULT_DATA));
+        try {
+            var parsed = JSON.parse(raw);
+            [1, 2, 3, 4].forEach(function (d) { if (!Array.isArray(parsed[d])) parsed[d] = []; });
+            return parsed;
+        } catch (e) { return JSON.parse(JSON.stringify(DEFAULT_DATA)); }
+    }
+
+    function saveData() {
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch (e) {}
+    }
+
+    function showToast(msg) {
+        toast.textContent = msg;
+        toast.classList.add('show');
+        clearTimeout(showToast._t);
+        showToast._t = setTimeout(function () { toast.classList.remove('show'); }, 1800);
+    }
+
+    function burstConfetti(x, y) {
+        for (var i = 0; i < 14; i++) {
+            var piece = document.createElement('div');
+            piece.className = 'confetti';
+            var angle = Math.random() * Math.PI * 2;
+            var dist = 50 + Math.random() * 70;
+            piece.style.left = x + 'px';
+            piece.style.top = y + 'px';
+            piece.style.background = colors[i % colors.length];
+            piece.style.setProperty('--dx', Math.cos(angle) * dist + 'px');
+            piece.style.setProperty('--dy', Math.sin(angle) * dist + 'px');
+            piece.style.setProperty('--rot', (Math.random() * 360) + 'deg');
+            piece.style.animationDuration = (450 + Math.random() * 300) + 'ms';
+            document.body.appendChild(piece);
+            piece.addEventListener('animationend', function () { this.remove(); });
+        }
+    }
+
+    function escapeHtml(s) {
+        return (s || '').replace(/[&<>"']/g, function (c) {
+            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+        });
+    }
+
+    function renderItem(day, idx, item) {
+        var div = document.createElement('div');
+        div.className = 'item' + (item.done ? ' done' : '');
+        div.setAttribute('data-day', day);
+        div.setAttribute('data-idx', idx);
+
+        var titleHtml = item.url
+            ? '<a href="' + escapeHtml(item.url) + '" target="_blank" rel="noopener">' + escapeHtml(item.title) + '</a>'
+            : escapeHtml(item.title);
+
+        var facts = [];
+        if (item.transport) facts.push('<span><span class="k">교통</span> ' + escapeHtml(item.transport) + '</span>');
+        if (item.hours) facts.push('<span><span class="k">운영</span> ' + escapeHtml(item.hours) + '</span>');
+        if (item.closed) facts.push('<span><span class="k">휴무</span> ' + escapeHtml(item.closed) + '</span>');
+        var factsHtml = facts.length ? '<div class="facts">' + facts.join('') + '</div>' : '';
+        var menuHtml = item.menu ? '<div class="facts"><span class="k">메뉴/참고</span> ' + escapeHtml(item.menu) + '</div>' : '';
+        var descHtml = item.desc ? '<div class="desc">' + escapeHtml(item.desc) + '</div>' : '';
+
+        div.innerHTML =
+            '<span class="item-icon"><img src="' + iconUrl(item.icon) + '" alt="" loading="lazy"></span>' +
+            '<div class="item-body">' +
+            '<div class="item-time">' + escapeHtml(item.time) + '</div>' +
+            '<div class="item-title">' + titleHtml + '</div>' +
+            factsHtml + menuHtml + descHtml +
+            '</div>' +
+            '<input type="checkbox" class="chk item-chk" aria-label="완료 표시"' + (item.done ? ' checked' : '') + '>' +
+            '<button type="button" class="item-edit" aria-label="수정">✏️</button>';
+
+        div.querySelector('.item-chk').addEventListener('change', function (e) {
+            item.done = e.target.checked;
+            div.classList.toggle('done', item.done);
+            if (item.done) {
+                var rect = e.target.getBoundingClientRect();
+                burstConfetti(rect.left + rect.width / 2, rect.top + rect.height / 2);
+            }
+            saveData();
+        });
+        div.querySelector('.item-edit').addEventListener('click', function () {
+            openModal(day, idx);
+        });
+
+        return div;
+    }
+
+    function renderDay(day) {
+        var container = document.querySelector('.items[data-day-items="' + day + '"]');
+        container.innerHTML = '';
+        data[day].forEach(function (item, idx) {
+            container.appendChild(renderItem(day, idx, item));
+        });
+    }
+
+    function renderAll() { [1, 2, 3, 4].forEach(renderDay); }
+
+    function goto(n) {
+        n = Math.max(1, Math.min(total, n));
+        current = n;
+        days.forEach(function (d) {
+            var isActive = Number(d.getAttribute('data-day')) === n;
+            d.hidden = !isActive;
+            if (isActive) { d.style.animation = 'none'; void d.offsetWidth; d.style.animation = ''; }
+        });
+        tabs.forEach(function (t) { t.classList.toggle('active', Number(t.getAttribute('data-goto')) === n); });
+        dots.forEach(function (dot) { dot.classList.toggle('active', Number(dot.getAttribute('data-goto')) === n); });
+        prevBtn.disabled = n === 1;
+        nextBtn.disabled = n === total;
+        pager.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    prevBtn.addEventListener('click', function () { goto(current - 1); });
+    nextBtn.addEventListener('click', function () { goto(current + 1); });
+    tabs.forEach(function (t) { t.addEventListener('click', function () { goto(Number(t.getAttribute('data-goto'))); }); });
+    dots.forEach(function (dot) { dot.addEventListener('click', function () { goto(Number(dot.getAttribute('data-goto'))); }); });
+
+    var touchStartX = null;
+    pager.addEventListener('touchstart', function (e) { touchStartX = e.changedTouches[0].clientX; }, { passive: true });
+    pager.addEventListener('touchend', function (e) {
+        if (touchStartX === null) return;
+        var dx = e.changedTouches[0].clientX - touchStartX;
+        if (Math.abs(dx) > 50) goto(dx < 0 ? current + 1 : current - 1);
+        touchStartX = null;
+    }, { passive: true });
+
+    document.addEventListener('keydown', function (e) {
+        if (document.getElementById('modalBackdrop').classList.contains('open')) return;
+        if (e.key === 'ArrowRight') goto(current + 1);
+        if (e.key === 'ArrowLeft') goto(current - 1);
+    });
+
+    /* ---- edit modal ---- */
+    var backdrop = document.getElementById('modalBackdrop');
+    var form = document.getElementById('itemForm');
+    var iconPicker = document.getElementById('iconPicker');
+    var modalTitle = document.getElementById('modalTitle');
+    var deleteBtn = document.getElementById('deleteItemBtn');
+    var editingDay = null, editingIdx = null, selectedIcon = DEFAULT_ICON;
+
+    Object.keys(ICON_MAP).forEach(function (key) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.title = ICON_MAP[key].name;
+        b.setAttribute('data-icon-key', key);
+        var img = document.createElement('img');
+        img.src = iconUrl(key);
+        img.alt = ICON_MAP[key].name;
+        img.loading = 'lazy';
+        b.appendChild(img);
+        b.addEventListener('click', function () {
+            selectedIcon = key;
+            iconPicker.querySelectorAll('button').forEach(function (x) { x.classList.remove('active'); });
+            b.classList.add('active');
+        });
+        iconPicker.appendChild(b);
+    });
+
+    function openModal(day, idx) {
+        editingDay = day;
+        editingIdx = idx;
+        var isNew = idx === null;
+        var item = isNew ? { icon: DEFAULT_ICON, time: '', title: '', url: '', transport: '', hours: '', closed: '', menu: '', desc: '' } : data[day][idx];
+
+        modalTitle.textContent = isNew ? '새 일정 추가 · Day ' + day : '일정 수정 · Day ' + day;
+        deleteBtn.style.display = isNew ? 'none' : 'inline-block';
+
+        selectedIcon = item.icon || DEFAULT_ICON;
+        iconPicker.querySelectorAll('button').forEach(function (b) { b.classList.toggle('active', b.getAttribute('data-icon-key') === selectedIcon); });
+
+        document.getElementById('f-time').value = item.time || '';
+        document.getElementById('f-title').value = item.title || '';
+        document.getElementById('f-url').value = item.url || '';
+        document.getElementById('f-transport').value = item.transport || '';
+        document.getElementById('f-hours').value = item.hours || '';
+        document.getElementById('f-closed').value = item.closed || '';
+        document.getElementById('f-menu').value = item.menu || '';
+        document.getElementById('f-desc').value = item.desc || '';
+
+        backdrop.classList.add('open');
+        setTimeout(function () { document.getElementById('f-title').focus(); }, 200);
+    }
+
+    function closeModal() {
+        backdrop.classList.remove('open');
+        editingDay = null;
+        editingIdx = null;
+    }
+
+    document.getElementById('modalClose').addEventListener('click', closeModal);
+    document.getElementById('modalCancel').addEventListener('click', closeModal);
+    backdrop.addEventListener('click', function (e) { if (e.target === backdrop) closeModal(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && backdrop.classList.contains('open')) closeModal(); });
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var newItem = {
+            icon: selectedIcon,
+            time: document.getElementById('f-time').value.trim(),
+            title: document.getElementById('f-title').value.trim(),
+            url: document.getElementById('f-url').value.trim(),
+            transport: document.getElementById('f-transport').value.trim(),
+            hours: document.getElementById('f-hours').value.trim(),
+            closed: document.getElementById('f-closed').value.trim(),
+            menu: document.getElementById('f-menu').value.trim(),
+            desc: document.getElementById('f-desc').value.trim()
+        };
+        if (!newItem.title) return;
+
+        if (editingIdx === null) {
+            data[editingDay].push(newItem);
+        } else {
+            newItem.done = data[editingDay][editingIdx].done || false;
+            data[editingDay][editingIdx] = newItem;
+        }
+        saveData();
+        renderDay(editingDay);
+        closeModal();
+        showToast('저장했어요 ✨');
+    });
+
+    deleteBtn.addEventListener('click', function () {
+        if (editingIdx === null) return;
+        data[editingDay].splice(editingIdx, 1);
+        saveData();
+        renderDay(editingDay);
+        closeModal();
+        showToast('일정을 삭제했어요');
+    });
+
+    document.querySelectorAll('.add-item-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            openModal(Number(btn.getAttribute('data-day')), null);
+        });
+    });
+
+    renderAll();
+    goto(1);
+})();
+</script>
+
+</body>
+</html>
