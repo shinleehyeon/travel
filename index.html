@@ -387,8 +387,17 @@
         var removeBtn = li.querySelector('.remove-x');
         if (removeBtn) {
             removeBtn.addEventListener('click', function () {
+                var done = false;
+                var finish = function () {
+                    if (done) return;
+                    done = true;
+                    li.remove();
+                    save();
+                };
+                li.style.animation = '';
                 li.classList.add('leaving');
-                li.addEventListener('animationend', function () { li.remove(); save(); }, { once: true });
+                li.addEventListener('animationend', finish, { once: true });
+                setTimeout(finish, 300);
             });
         }
     }
