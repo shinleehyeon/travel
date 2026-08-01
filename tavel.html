@@ -124,14 +124,14 @@
         .day-title { font-size: 0.98rem; color: var(--ink-soft); }
 
         .items { position: relative; }
-        .items::before { content: ""; position: absolute; left: 31px; top: 6px; bottom: 6px; width: 2px; background: var(--line); }
+        .items::before { content: ""; position: absolute; left: 25px; top: 6px; bottom: 6px; width: 2px; background: var(--line); }
         .item { position: relative; display: flex; align-items: flex-start; gap: 14px; padding: 16px 60px 16px 0; transition: background 0.25s ease; }
         .item.done { background: var(--accent-soft); border-radius: 6px; }
         .item.done .item-title { text-decoration: line-through; color: var(--ink-soft); }
         .item.done .item-title a { color: inherit; }
-        .item-icon { position: relative; flex: none; width: 64px; height: 64px; border-radius: 50%; background: var(--card); border: 2px solid var(--line); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); overflow: hidden; transition: transform 0.25s cubic-bezier(.34,1.56,.64,1); z-index: 1; }
+        .item-icon { position: relative; flex: none; width: 52px; height: 52px; border-radius: 50%; background: var(--card); border: 2px solid var(--line); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); overflow: hidden; transition: transform 0.25s cubic-bezier(.34,1.56,.64,1); z-index: 1; }
         .item:hover .item-icon { transform: scale(1.12) rotate(-6deg); }
-        .item-icon img { width: 48px; height: 48px; object-fit: contain; }
+        .item-icon img { width: 36px; height: 36px; object-fit: contain; }
         .item-body { flex: 1; min-width: 0; }
         .item-chk { position: absolute; right: 30px; top: 16px; margin: 0; width: 22px; height: 22px; border-radius: 50%; }
         .item-chk:checked::after { left: 7px; top: 3px; }
@@ -163,9 +163,9 @@
             .day-tab { font-size: 0.72rem; padding: 8px 2px; }
             .pager-arrow { width: 30px; height: 30px; font-size: 1rem; }
             .item { padding-right: 52px; gap: 8px; }
-            .item-icon { width: 50px; height: 50px; }
-            .item-icon img { width: 38px; height: 38px; }
-            .items::before { left: 24px; }
+            .item-icon { width: 42px; height: 42px; }
+            .item-icon img { width: 28px; height: 28px; }
+            .items::before { left: 20px; }
             .item-chk { right: 26px; }
             .modal { padding: 18px; }
             .field-row { flex-direction: column; gap: 0; }
